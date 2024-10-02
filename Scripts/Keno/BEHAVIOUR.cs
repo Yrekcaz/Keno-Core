@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
-using UnityEngine.SceneManagement;
 //using Pv.Unity;
 
-//PLEASE FEEL FREE TO REWORK/CLEAN UP/OPTIMIZE, this is currently a trainwreck
-//ANIMATIONS USE VIDEOPLAYERS AND .mp4 FILES MADE IN FLIPACLIP
-//PLEASE CHECK OUT THE README
+//MADE BY YREKCAZ. GIVE PROPER CREDITS BEFORE USING
+
+//Please feel free to rework/clean up/optimize, this is currently a trainwreck
+//Please check out the README
 
 public class BEHAVIOUR : MonoBehaviour
 {
