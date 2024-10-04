@@ -8,12 +8,13 @@ using UnityEngine.Video;
 public class RPS : MonoBehaviour
 {
     public BEHAVIOUR Bh;
-    // Start is called before the first frame update
-    public IEnumerator RockPaperScissors() //rock paper scissors
+
+    public IEnumerator RockPaperScissors() //The rock paper scissors game logic
     {
         Bh.interupt();   
         Bh.ProceedTrue = false;
         Bh.Entertained = true;
+        //Enable Buttons
         Bh.RPSAssets.SetActive(true);
         Bh.RockButton.SetActive(true);
         Bh.PaperButton.SetActive(true);
@@ -36,6 +37,7 @@ public class RPS : MonoBehaviour
             Bh.RockButton.SetActive(false);
             Bh.PaperButton.SetActive(false);
         }
+        //Keno's turn to choose
         Bh.variant = Random.Range(1, 4);
         Debug.Log("KENO Chose:" + Bh.variant);
         if (Bh.variant == 1){
@@ -48,6 +50,7 @@ public class RPS : MonoBehaviour
             Bh.PlayVideo(Bh.Scissors);
         }
         yield return new WaitForSeconds(3f);
+        //Determine the winner and react
         if (Bh.variant == 1 && Bh.choice == "Scissors" || Bh.variant == 2 && Bh.choice == "Rock" || Bh.variant == 3 && Bh.choice == "Paper"){ //WON
             Bh.variant = Random.Range(1, 4);
             Debug.Log("Variant: " + Bh.variant);
@@ -72,6 +75,7 @@ public class RPS : MonoBehaviour
 
         }
         yield return new WaitForSeconds(3f);
+        //End rock paper scissors
         Bh.RPSAssets.SetActive(false);
         Bh.Entertained = false;
         Bh.ProceedTrue = false;
