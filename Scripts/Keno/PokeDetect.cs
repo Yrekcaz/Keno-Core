@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// This script is currently pretty much unused until i get to making the button disable itself when needed
+// Poke Detection is in the midst of being made, just dealing with probably unrelated issues in Rock Paper Scissors
 
 public class PokeDetect : MonoBehaviour
 {
@@ -43,7 +43,7 @@ public class PokeDetect : MonoBehaviour
     {
         Debug.Log("Starting video...");
         Bh.interupt();
-        //Bh.PlayVideo(Squint);
+        //Bh.PlayVideo(Bh.Poked);
     }
 
     private void StopVideo()

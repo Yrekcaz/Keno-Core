@@ -13,14 +13,14 @@ using TMPro;
 
 public class BEHAVIOUR : MonoBehaviour
 {
-    private Coroutine currentAttitudeReset;
+    public Coroutine currentAttitudeReset;
     private Coroutine currentPause;
-
-    [Tooltip("This is the refernce to the `Modes` script")] public Modes Modes;
+    [Tooltip("This is the refernce to the `Modes` script, which should be on a GameObject")] public Modes Modes;
+    [Tooltip("This is the refernce to the `RPS` script, which should be on a GameObject")] public RPS RPS;
 
     [Header("Behaviour values")]
     public float waitForBoredom;
-    public string choice;
+    public string choice; 
     public bool longWait = false;
     public bool ProceedTrue = false;
     public bool doingsomething = false;
@@ -39,6 +39,7 @@ public class BEHAVIOUR : MonoBehaviour
     public GameObject RPSAssets;
     public GameObject RockButton; public GameObject PaperButton; public GameObject ScissorsButton;
     public GameObject StopActivityButton; public GameObject ModeSelectGUI;
+    [Tooltip("Set this to the Poke Region button")] public GameObject PR;
     [Header("Animations")]
     public VideoPlayer Rock;
     public VideoPlayer Paper;
@@ -212,6 +213,7 @@ public class BEHAVIOUR : MonoBehaviour
     IEnumerator HandleBoredState()
     {
         interupt();
+        PR.SetActive(false);
         isBored = false;
         ProceedTrue = false;
         Entertained = true;
@@ -229,10 +231,11 @@ public class BEHAVIOUR : MonoBehaviour
 
         if (choice == "Yes")
         {
-            StartCoroutine(RPS());
+            StartCoroutine(RPS.RockPaperScissors());
         }
         else
         {
+            PR.SetActive(true);
             attitude = 2;
             if (currentAttitudeReset != null) { StopCoroutine(currentAttitudeReset);
             Debug.Log("Stopped Existing AR"); }
@@ -278,7 +281,7 @@ public class BEHAVIOUR : MonoBehaviour
         doingsomething = false;
     }
 
-    IEnumerator attitudeReset(float duration)
+    public IEnumerator attitudeReset(float duration)
     {
         Debug.Log("Attitude Reset Timer Started");
         float timePassed = 0f;
@@ -326,6 +329,7 @@ public class BEHAVIOUR : MonoBehaviour
     // Events
     public void AskGame()
     {
+        PR.SetActive(false);
         gameRequest.SetActive(true);
         GameButton.interactable = false;
     }
@@ -341,6 +345,7 @@ public class BEHAVIOUR : MonoBehaviour
 
     public IEnumerator UserRequestedGame()
     {
+        PR.SetActive(false);
         interupt();
         ProceedTrue = false;
         isBored = false;
@@ -353,85 +358,18 @@ public class BEHAVIOUR : MonoBehaviour
         Entertained = false;
         if (choice == "RPS")
         {
-            StartCoroutine(RPS());
+            StartCoroutine(RPS.RockPaperScissors());
         }
         else if (choice == "Modes") { }
         else
         {
+            PR.SetActive(true);
             uninterupt();
+            Entertained = false;
             GameButton.interactable = true;
         }
     }
 
-    private IEnumerator RPS() //rock paper scissors
-    {
-        interupt();   
-        ProceedTrue = false;
-        Entertained = true;
-        RPSAssets.SetActive(true);
-        RockButton.SetActive(true);
-        PaperButton.SetActive(true);
-        ScissorsButton.SetActive(true);
-        yield return new WaitUntil(() => ProceedTrue);
-        Debug.Log("Choice: " + choice);
-        if(choice == "Rock")
-        {
-            PaperButton.SetActive(false);
-            ScissorsButton.SetActive(false);
-        }
-        else if(choice == "Paper")
-        {
-            RockButton.SetActive(false);
-            ScissorsButton.SetActive(false);
-        }
-        else if(choice == "Scissors")
-        {
-            RockButton.SetActive(false);
-            PaperButton.SetActive(false);
-        }
-        variant = Random.Range(1, 4);
-        Debug.Log("KENO Chose:" + variant);
-        if (variant == 1){
-            PlayVideo(Rock);
-        }
-        else if (variant == 2){
-            PlayVideo(Paper);
-        }
-        else if (variant == 3){
-            PlayVideo(Scissors);
-        }
-        yield return new WaitForSeconds(3f);
-        if (variant == 1 && choice == "Scissors" || variant == 2 && choice == "Rock" || variant == 3 && choice == "Paper"){ //WON
-            variant = Random.Range(1, 4);
-            Debug.Log("Variant: " + variant);
-            PlayVideo(variant == 1 ? Joy : variant == 2 ? Joy2 : CoolGlasses);
-            attitude = 1;
-            if (currentAttitudeReset != null) { StopCoroutine(currentAttitudeReset);  Debug.Log("Stopped Existing AR"); }
-            currentAttitudeReset = StartCoroutine(attitudeReset(Random.Range(4.5f, 15) * 60));
-        }
-        else if (variant == 2 && choice == "Scissors" || variant == 3 && choice == "Rock" || variant == 1 && choice == "Paper"){ //LOST
-            variant = Random.Range(1, 4);
-            Debug.Log("Variant: " + variant);
-            PlayVideo(variant == 1 ? Mad : Sad);
-            Debug.Log("Keno Lost");
-            attitude = 2;
-            if (currentAttitudeReset != null) { StopCoroutine(currentAttitudeReset); Debug.Log("Stopped Existing AR"); }
-            currentAttitudeReset = StartCoroutine(attitudeReset(Random.Range(4.5f, 15) * 60));
-        }
-        else if (variant == 3 && choice == "Scissors" || variant == 1 && choice == "Rock" || variant == 2 && choice == "Paper"){ //TIE
-            PlayVideo(Confused); 
-            Debug.Log("Tie");
-            attitude = 0;
-
-        }
-        yield return new WaitForSeconds(3f);
-        RPSAssets.SetActive(false);
-        Entertained = false;
-        ProceedTrue = false;
-        uninterupt();
-        GameButton.interactable = true;
-        StartCoroutine(BoredTrigger(waitForBoredom * 60));
-    }
     public void ModeEnter(string Mode)
     {
         StartCoroutine(Modes.ModeHandle(Mode));

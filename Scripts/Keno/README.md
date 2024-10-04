@@ -10,7 +10,7 @@ There is info missing here. This is a WIP, and help is greatly appreciated
 
 ## STOPS AND WAITS
 `interupt()` stops whatever Keno is doing, but be warned that it does not mess with `Entertained` and `ProceedTrue`, so you'll have to manually change those.
-`uninterupt()` undoes what `interupt()` does, resulting in him returning to normal. Note: To avoid issues, try to unnecessarily avoid triggering `uninterupt()` more than once.
+`uninterupt()` undoes what `interupt()` does, resulting in him returning to normal. `PR` should be disabled (`PR.SetActive(false)`) in events, and set back to active once the event ends
 
 `pause()` is responsible for the main wait in `update()` that makes the system wait before playing the next automated animation(s)
 
@@ -25,3 +25,7 @@ There is info missing here. This is a WIP, and help is greatly appreciated
 
 `ProceedTrue` is for waiting until the user chooses an option
 `choice` temporarily stores what the user chose on an interface that had several options. Usually paired with `ProceedTrue`
+
+
+# KNOWN ISSUES
+If you play rock paper scissors after he had been asleep or reading previously, chosing an option (rock, paper, or scissors) will cause weird behaviour. Any help fixing this would be extremely appreciated.
