@@ -28,4 +28,5 @@ There is info missing here. This is a WIP, and help is greatly appreciated
 
 
 # KNOWN ISSUES
-If you play rock paper scissors after he had been asleep or reading previously, chosing an option (rock, paper, or scissors) will cause weird behaviour. Any help fixing this would be extremely appreciated.
+Sometimes upon ending the `Reading` mode, it will skip past the end animation and go straight back to normal without playing the end animation.
+

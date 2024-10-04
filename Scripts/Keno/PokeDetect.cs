@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// Poke Detection is in the midst of being made, just dealing with probably unrelated issues in Rock Paper Scissors
+// This script handles Keno's eyes being pressed/poked via an invisible button on top of his eyes
 
 public class PokeDetect : MonoBehaviour
 {
     public BEHAVIOUR Bh;
     private bool isHolding = false;
     private float holdStartTime;
-    public float holdThreshold = 0.5f;
+    public float holdThreshold = 0.3f;
 
     // This will be linked to the EventTrigger's Pointer Down event
     public void OnPointerDown(BaseEventData eventData)
@@ -42,13 +42,13 @@ public class PokeDetect : MonoBehaviour
     private void StartVideo()
     {
         Debug.Log("Starting video...");
-        Bh.interupt();
-        //Bh.PlayVideo(Bh.Poked);
+        Bh.interupt(); //Stop Keno's thought process
+        Bh.PlayVideo(Bh.Poked); //Play the `Poked` animation
     }
 
     private void StopVideo()
     {
         Debug.Log("Stopping video...");
-        Bh.uninterupt();
+        Bh.uninterupt(); //Allow Keno to go back to the main loop
     }
 }

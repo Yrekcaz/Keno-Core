@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
+// This script holds Keno's modes
+
 public class Modes : MonoBehaviour
 {
     public BEHAVIOUR Bh;
@@ -33,7 +35,7 @@ public class Modes : MonoBehaviour
                 if (Bh.variant == 1) {ReadStartVar = Bh.ReadStart; ReadLoopVar = Bh.ReadLoop; ReadEndVar = Bh.ReadEnd;}
                 else /*if (variant == 2)*/ {ReadStartVar = Bh.ReadStart2; ReadLoopVar = Bh.ReadLoop2; ReadEndVar = Bh.ReadEnd2;}
                 Bh.PlayVideo(ReadStartVar);
-                Bh.attitude = 0;
+                Bh.attitude = 0; //Set his attitude (mood) to neutral
                 yield return new WaitForSeconds(1.3f);
                 Bh.PlayVideo(ReadLoopVar);
                 yield return new WaitUntil(() => Bh.ProceedTrue);
@@ -44,7 +46,7 @@ public class Modes : MonoBehaviour
                 break;
             case "Sleep": // I would really love to add a little snore thing some day (similar to that of an Anki Vector robot)
                 Bh.PlayVideo(Bh.SleepStart);
-                Bh.attitude = 0;
+                Bh.attitude = 0; //Set his attitude (mood) to neutral
                 yield return new WaitUntil(() => Bh.ProceedTrue);
                 if (Bh.choice == "Stop Activity")
                 {
@@ -58,14 +60,14 @@ public class Modes : MonoBehaviour
         }
     }
 
-    public IEnumerator endMode(VideoPlayer End, float waitTime)
+    public IEnumerator endMode(VideoPlayer End, float waitTime) // Stop whatever mode is active.
     {
         Bh.ProceedTrue = false;
         Bh.StopActivityButton.SetActive(false);
         Bh.StopAllVideos();
         yield return new WaitForEndOfFrame();
         Bh.PlayVideo(End);
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime); //`waitTime` is the length of the wait after the given animation; should be around the length of the End animation
         StartCoroutine(Bh.BoredTrigger(Bh.waitForBoredom * 60));
         Bh.uninterupt();
         Bh.PR.SetActive(true);

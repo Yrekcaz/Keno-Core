@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
-//using Pv.Unity;
 
 //MADE BY YREKCAZ. GIVE PROPER CREDITS BEFORE USING
 
 //Please feel free to rework/clean up/optimize, this is currently a trainwreck
 //Please check out the README
+
+//This is the main script, which is the main backbone of Keno
 
 public class BEHAVIOUR : MonoBehaviour
 {
@@ -82,8 +83,8 @@ public class BEHAVIOUR : MonoBehaviour
 
     void Start()
     {
-        Tutorial.isTutorial = false;
-        StopAllVideos(); // Ensure all VideoPlayers are initially stopped and disabled
+        Tutorial.isTutorial = false; //Ensures that we are not in the tutorial
+        StopAllVideos(); //Ensure all VideoPlayers are initially stopped and disabled
         GameReqOn = PlayerPrefs.GetInt("Game Requests", 1) == 1 ? true : false;
         StartCoroutine(BoredTrigger(waitForBoredom * 60));
         gameRequest.SetActive(false);
@@ -108,22 +109,9 @@ public class BEHAVIOUR : MonoBehaviour
                 else { Debug.LogWarning("No NEUTRAL video file selected or path not found."); }
             }
         }
-        //BLEEnabled = PlayerPrefs.GetInt("BLEEnabled", 0) == 1 ? true : false;
-        if (SceneChange.LFR == true)
-        {
-            Debug.Log("Loaded From Refresh");
-            System.DateTime currentTime = System.DateTime.Now;
-            System.DateTime start = System.DateTime.Today.AddHours(20); // 8 PM today
-            System.DateTime end = System.DateTime.Today.AddHours(7); // 7 AM today
-            if ((currentTime >= start) || (currentTime <= end))
-            {
-                asleepThisSession = true;
-                Debug.Log("Loaded From Refresh And Past Bedtime; asleepThisSession = true");
-                SceneChange.LFR = false;
-            }
-        }
-        //PlayVideo(SleepEnd);
-        //StartCoroutine(Pause(2.5f));
+        doingsomething = true;
+        PlayVideo(SleepEnd);
+        StartCoroutine(Pause(2.5f));
     }
 
     void Update()
