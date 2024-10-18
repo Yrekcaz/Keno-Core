@@ -16,8 +16,9 @@ public class BEHAVIOUR : MonoBehaviour
 {
     public Coroutine currentAttitudeReset;
     private Coroutine currentPause;
-    [Tooltip("This is the refernce to the `Modes` script, which should be on a GameObject")] public Modes Modes;
-    [Tooltip("This is the refernce to the `RPS` script, which should be on a GameObject")] public RPS RPS;
+    [Tooltip("This is the reference to the eyes, which should be a GameObject with a SpriteRenderer")] public SpriteRenderer Eyes;
+    [Tooltip("This is the reference to the `Modes` script, which should be on a GameObject")] public Modes Modes;
+    [Tooltip("This is the reference to the `RPS` script, which should be on a GameObject")] public RPS RPS;
 
     [Header("Behaviour values")]
     public float waitForBoredom;
@@ -63,7 +64,9 @@ public class BEHAVIOUR : MonoBehaviour
     public VideoPlayer LookBottomLeft;
     public VideoPlayer LookBottomRight;
     [Tooltip("This is the short variant of the animation")] public VideoPlayer LookRightS;
+    [Tooltip("This is the short variant of the animation")] public VideoPlayer LookLeftS;
     [Tooltip("This is the long variant of the animation")] public VideoPlayer LookRightL;
+    [Tooltip("This is the long variant of the animation")] public VideoPlayer LookLeftL;
     [Header("Mode Animations")]//Modes
     public VideoPlayer QuestionInvoke;
     public VideoPlayer SleepStart;
@@ -78,8 +81,9 @@ public class BEHAVIOUR : MonoBehaviour
     public VideoPlayer MovieLoop;
     public VideoPlayer MovieEnd;
     [Header("Interaction Animations")]
-    public VideoPlayer Poked;
     public VideoPlayer Alarm;
+    public Sprite Poked;
+    [Tooltip("This should be what the eye gameobject image is by default")]public Sprite Normal;
 
     void Start()
     {
@@ -170,7 +174,7 @@ public class BEHAVIOUR : MonoBehaviour
                 {
                     variant = Random.Range(1, 3);
                     Debug.Log("Variant: " + variant);
-                    PlayVideo(variant == 1 ? LookRightS : LookRightS); //Placeholder; planning on adding a left variant
+                    PlayVideo(variant == 1 ? LookRightS : LookLeftS);
                 }
                 else if (whatToDo == 8) // attitude dependent 1
                 {
@@ -188,7 +192,7 @@ public class BEHAVIOUR : MonoBehaviour
                 {
                     if (attitude == 1) { PlayVideo(CoolGlasses); }
                     else if (attitude == 2) { PlayVideo(Mad); }
-                    else if (attitude == 0) { variant = Random.Range(1,3); PlayVideo(variant == 1 ? LookRightL : LookRightL); longWait = true;} //Placeholder; planning on adding a left variant
+                    else if (attitude == 0) { variant = Random.Range(1,3); PlayVideo(variant == 1 ? LookRightL : LookLeftL); longWait = true;}
                 }
 
                 if (currentPause != null) { StopCoroutine(currentPause);  Debug.Log("Stopped Existing Pause"); }
@@ -368,8 +372,8 @@ public class BEHAVIOUR : MonoBehaviour
     public void StopAllVideos()
     {
         VideoPlayer[] videos = { Rock, Paper, Scissors, CustomExpression, HappyCustomExpression, SadCustomExpression, NeutralCustomExpression, Blink, Joy, Joy2, Sad, Mad, Bored1, Bored2, Confused, CoolGlasses, 
-        LookTopLeft, LookTopRight, LookBottomLeft, LookBottomRight, LookRightS, LookRightL, SleepStart, SleepEnd, ReadStart, ReadLoop, ReadEnd, ReadStart2, ReadLoop2, ReadEnd2, MovieStart, MovieLoop, MovieEnd,
-        Poked, Alarm };
+        LookTopLeft, LookTopRight, LookBottomLeft, LookBottomRight, LookRightS, LookLeftS, LookRightL, LookLeftL, SleepStart, SleepEnd, ReadStart, ReadLoop, ReadEnd, ReadStart2, ReadLoop2, ReadEnd2, MovieStart, MovieLoop, MovieEnd,
+        Alarm };
         foreach (VideoPlayer video in videos)
         {
             video.Stop();

@@ -16,7 +16,7 @@ public class PokeDetect : MonoBehaviour
         isHolding = true;
         holdStartTime = Time.time;
         Debug.Log("Button Pressed - Start the hold");
-        StartVideo();
+        StartPoke();
     }
 
     // This will be linked to the EventTrigger's Pointer Up event
@@ -24,7 +24,7 @@ public class PokeDetect : MonoBehaviour
     {
         isHolding = false;
         Debug.Log("Button Released - End the hold");
-        StopVideo();
+        StopPoke();
     }
 
     void Update()
@@ -39,16 +39,17 @@ public class PokeDetect : MonoBehaviour
         }
     }
 
-    private void StartVideo()
+    private void StartPoke()
     {
-        Debug.Log("Starting video...");
+        Debug.Log("Started");
         Bh.interupt(); //Stop Keno's thought process
-        Bh.PlayVideo(Bh.Poked); //Play the `Poked` animation
+        Bh.Eyes.sprite = Bh.Poked; //Play the `Poked` animation
     }
 
-    private void StopVideo()
+    private void StopPoke()
     {
-        Debug.Log("Stopping video...");
+        Debug.Log("Stopped");
+        Bh.Eyes.sprite = Bh.Normal;
         Bh.uninterupt(); //Allow Keno to go back to the main loop
     }
 }
