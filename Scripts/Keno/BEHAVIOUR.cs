@@ -262,16 +262,20 @@ public class BEHAVIOUR : MonoBehaviour
         Alarm };
         foreach (VideoPlayer video in videos)
         {
-            video.Stop();
-            video.gameObject.SetActive(false);
+            if(video != null) {
+                video.Stop();
+                video.gameObject.SetActive(false);
+            }
         }
     }
 
     // Play Video
     public void PlayVideo(VideoPlayer videoPlayer)
     {
-        StopAllVideos();
-        videoPlayer.gameObject.SetActive(true);
-        videoPlayer.Play();
+        if(videoPlayer != null) {
+            StopAllVideos();
+            videoPlayer.gameObject.SetActive(true);
+            videoPlayer.Play();
+        }
     }
 }
