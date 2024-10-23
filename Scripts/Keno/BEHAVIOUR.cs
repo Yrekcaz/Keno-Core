@@ -19,14 +19,13 @@ public class BEHAVIOUR : MonoBehaviour
     [Tooltip("This is the reference to the eyes, which should be a GameObject with a SpriteRenderer")] public SpriteRenderer Eyes;
     [Tooltip("This is the reference to the `Modes` script, which should be on a GameObject")] public Modes Modes;
     [Tooltip("This is the reference to the `RPS` script, which should be on a GameObject")] public RPS RPS;
+    [Tooltip("This is the reference to the `GameRequests ` script, which should be on a GameObject")] public GameRequests GameRequests;
 
     [Header("Behaviour values")]
-    public float waitForBoredom;
     public string choice; 
     public bool longWait = false;
     public bool ProceedTrue = false;
     public bool doingsomething = false;
-    public bool isBored = false;
     public bool Entertained = false;
     public bool interupted = false;
     public bool ResetAttitudeTimer = false;
@@ -36,8 +35,6 @@ public class BEHAVIOUR : MonoBehaviour
     public float variant;
     public int attitude = 0; // 0 = normal, 1 = happy/cool, 2 = sad/angry
     [Header("Game related stuff and buttons")]
-    public TextMeshProUGUI gameName;
-    public GameObject gameRequest; public GameObject gameSelectGUI;  public GameObject gameSelectGUI2; public Button GameButton;
     public GameObject RPSAssets;
     public GameObject RockButton; public GameObject PaperButton; public GameObject ScissorsButton;
     public GameObject StopActivityButton; public GameObject ModeSelectGUI;
@@ -90,10 +87,6 @@ public class BEHAVIOUR : MonoBehaviour
         Tutorial.isTutorial = false; //Ensures that we are not in the tutorial
         StopAllVideos(); //Ensure all VideoPlayers are initially stopped and disabled
         GameReqOn = PlayerPrefs.GetInt("Game Requests", 1) == 1 ? true : false;
-        StartCoroutine(BoredTrigger(waitForBoredom * 60));
-        gameRequest.SetActive(false);
-        gameSelectGUI.SetActive(false);
-        gameSelectGUI2.SetActive(false);
         RPSAssets.SetActive(false);
         StopActivityButton.SetActive(false);
         ModeSelectGUI.SetActive(false);
@@ -129,13 +122,13 @@ public class BEHAVIOUR : MonoBehaviour
                 if (!asleepThisSession && PlayerPrefs.GetInt("Bedtime Enabled", 1) == 1 && ((currentTime >= start) || (currentTime <= end)) && !Tutorial.isTutorial)
                 {
                     Debug.Log("Bedtime");
-                    ModeEnter("Sleep");
+                    GameRequests.ModeEnter("Sleep");
                     attitude = 0;
                     asleepThisSession = true;
                 }
-                else if(isBored)
+                else if(GameRequests.isBored)
                 {
-                    StartCoroutine(HandleBoredState());
+                    StartCoroutine(GameRequests.HandleBoredState());
                 }
                 else { 
                 doingsomething = true;
@@ -201,42 +194,7 @@ public class BEHAVIOUR : MonoBehaviour
         }
     }
 
-    // Coroutine to handle bored state and the `Keno wants to play` dialogue
-    IEnumerator HandleBoredState()
-    {
-        interupt();
-        PR.SetActive(false);
-        isBored = false;
-        ProceedTrue = false;
-        Entertained = true;
-        variant = Random.Range(1, 3); // variant
-        Debug.Log("Bored");
-        Debug.Log("Variant: " + variant);
-        PlayVideo(variant == 1 ? Bored1 : Bored2);
-        yield return new WaitForSeconds(3);
-        AskGame();
-        gameName.text = "KENO would like to play Rock Paper Scissors";
-        yield return new WaitUntil(() => ProceedTrue);
-        Debug.Log("Choice: " + choice);
-        Entertained = false;
-        gameRequest.SetActive(false);
-
-        if (choice == "Yes")
-        {
-            StartCoroutine(RPS.RockPaperScissors());
-        }
-        else
-        {
-            PR.SetActive(true);
-            attitude = 2;
-            if (currentAttitudeReset != null) { StopCoroutine(currentAttitudeReset);
-            Debug.Log("Stopped Existing AR"); }
-            currentAttitudeReset = StartCoroutine(attitudeReset(Random.Range(2, 11) * 60));
-            uninterupt();
-            GameButton.interactable = true;
-            StartCoroutine(BoredTrigger(waitForBoredom * 60));
-        }
-    }
+    
 
     // Waits
     IEnumerator Pause(float duration)
@@ -289,83 +247,11 @@ public class BEHAVIOUR : MonoBehaviour
         currentAttitudeReset = null; // Clear the reference when done
     }
 
-    public IEnumerator BoredTrigger(float waitForBoredAgain)
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < waitForBoredAgain)
-        {
-            if (Entertained)
-            {
-                Entertained = false;
-                Debug.Log("Bored Trigger Cancled");
-                yield break; // Exit the coroutine
-            }
-            else if(GameReqOn == false)
-            {
-                Debug.Log("Game Requests Are Disabled");
-                yield break;
-            }
-            elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
-        }
-        isBored = true;
-    }
-
     public void SetProceedTrue(string optionID)
     {
         ProceedTrue = true;
         choice = optionID;
         Debug.Log(choice);
-    }
-
-    // Events
-    public void AskGame()
-    {
-        PR.SetActive(false);
-        gameRequest.SetActive(true);
-        GameButton.interactable = false;
-    }
-    public void ChooseGame()
-    {
-        gameSelectGUI.SetActive(true);
-        GameButton.interactable = false;
-    }
-    public void userGameRequest()
-    {
-        StartCoroutine(UserRequestedGame());
-    }
-
-    public IEnumerator UserRequestedGame()
-    {
-        PR.SetActive(false);
-        interupt();
-        ProceedTrue = false;
-        isBored = false;
-        Entertained = true;
-        ChooseGame();
-        yield return new WaitUntil(() => ProceedTrue);
-        Debug.Log("Choice: " + choice);
-        gameSelectGUI.SetActive(false);
-        gameSelectGUI2.SetActive(false);
-        Entertained = false;
-        if (choice == "RPS")
-        {
-            StartCoroutine(RPS.RockPaperScissors());
-        }
-        else if (choice == "Modes") { }
-        else
-        {
-            PR.SetActive(true);
-            uninterupt();
-            Entertained = false;
-            GameButton.interactable = true;
-        }
-    }
-
-    public void ModeEnter(string Mode)
-    {
-        StartCoroutine(Modes.ModeHandle(Mode));
-        Debug.Log("Mode Handle Initiated");
     }
 
     //stops all videos

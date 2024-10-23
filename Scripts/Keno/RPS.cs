@@ -81,7 +81,7 @@ public class RPS : MonoBehaviour
         Bh.ProceedTrue = false;
         Bh.uninterupt();
         Bh.PR.SetActive(true);
-        Bh.GameButton.interactable = true;
-        StartCoroutine(Bh.BoredTrigger(Bh.waitForBoredom * 60));
+        Bh.GameRequests.GameButton.interactable = true;
+        StartCoroutine(Bh.GameRequests.BoredTrigger(Bh.GameRequests.waitForBoredom * 60));
     }
 }

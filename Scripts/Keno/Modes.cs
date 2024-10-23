@@ -14,7 +14,7 @@ public class Modes : MonoBehaviour
         Debug.Log("Mode Handle Entered");
         Bh.PR.SetActive(false);
         Bh.interupt();
-        Bh.GameButton.interactable = false;
+        Bh.GameRequests.GameButton.interactable = false;
         Bh.ProceedTrue = false;
         Bh.Entertained = true;
         Bh.StopActivityButton.SetActive(true);
@@ -68,10 +68,10 @@ public class Modes : MonoBehaviour
         yield return new WaitForEndOfFrame();
         Bh.PlayVideo(End);
         yield return new WaitForSeconds(waitTime); //`waitTime` is the length of the wait after the given animation; should be around the length of the End animation
-        StartCoroutine(Bh.BoredTrigger(Bh.waitForBoredom * 60));
+        StartCoroutine(Bh.GameRequests.BoredTrigger(Bh.GameRequests.waitForBoredom * 60));
         Bh.uninterupt();
         Bh.PR.SetActive(true);
-        Bh.GameButton.interactable = true;
+        Bh.GameRequests.GameButton.interactable = true;
         Debug.Log("Activity Stopped");
         yield break;
     }
