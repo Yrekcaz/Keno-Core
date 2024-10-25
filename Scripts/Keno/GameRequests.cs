@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GameRequests : MonoBehaviour
 {
     public BEHAVIOUR Bh;
+    public Coroutine CurrentBoredTrigger;
     [Tooltip("This is the reference to the `RPS` script, which should be on a GameObject")] public RPS RPS;
     
     [Header("Values")]
@@ -18,7 +19,6 @@ public class GameRequests : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(BoredTrigger(waitForBoredom * 60));
         gameRequest.SetActive(false);
         gameSelectGUI.SetActive(false);
         gameSelectGUI2.SetActive(false);
@@ -27,7 +27,10 @@ public class GameRequests : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if((!Bh.interupted) && Bh.GameReqOn && CurrentBoredTrigger == null)
+        {
+            CurrentBoredTrigger = StartCoroutine(BoredTrigger(waitForBoredom * 60));
+        }
     }
 
     // Coroutine to handle bored state and the `Keno wants to play` dialogue
@@ -61,29 +64,32 @@ public class GameRequests : MonoBehaviour
             Bh.currentAttitudeReset = StartCoroutine(Bh.attitudeReset(Random.Range(2, 11) * 60));
             Bh.uninterupt();
             GameButton.interactable = true;
-            StartCoroutine(BoredTrigger(waitForBoredom * 60));
         }
     }
 
     public IEnumerator BoredTrigger(float waitForBoredAgain)
     {
+        Debug.Log("BoredTrigger Started");
         float elapsedTime = 0f;
         while (elapsedTime < waitForBoredAgain)
         {
             if (Bh.interupted)
             {
                 Debug.Log("Bored Trigger Cancled");
+                CurrentBoredTrigger = null;
                 yield break; // Exit the coroutine
             }
-            else if(Bh.GameReqOn == false)
+            else if(!Bh.GameReqOn)
             {
                 Debug.Log("Game Requests Are Disabled");
+                CurrentBoredTrigger = null;
                 yield break;
             }
             elapsedTime += Time.deltaTime;
             yield return null; // Wait for the next frame
         }
         isBored = true;
+        CurrentBoredTrigger = null;
     }
     
     // Events

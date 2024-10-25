@@ -67,7 +67,6 @@ public class Modes : MonoBehaviour
         yield return new WaitForEndOfFrame();
         Bh.PlayVideo(End);
         yield return new WaitForSeconds(waitTime); //`waitTime` is the length of the wait after the given animation; should be around the length of the End animation
-        StartCoroutine(Bh.GameRequests.BoredTrigger(Bh.GameRequests.waitForBoredom * 60));
         Bh.uninterupt();
         Bh.PR.SetActive(true);
         Bh.GameRequests.GameButton.interactable = true;
