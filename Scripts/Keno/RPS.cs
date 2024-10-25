@@ -9,33 +9,36 @@ public class RPS : MonoBehaviour
 {
     public BEHAVIOUR Bh;
 
+    [Tooltip("Set this to the game object holding all the Rock Paper Scissors buttons")] public GameObject RPSAssets;
+    public GameObject RockButton; public GameObject PaperButton; public GameObject ScissorsButton;
+
     public IEnumerator RockPaperScissors() //The rock paper scissors game logic
     {
         Bh.interupt();   
         Bh.ProceedTrue = false;
         Bh.Entertained = true;
         //Enable Buttons
-        Bh.RPSAssets.SetActive(true);
-        Bh.RockButton.SetActive(true);
-        Bh.PaperButton.SetActive(true);
-        Bh.ScissorsButton.SetActive(true);
+        RPSAssets.SetActive(true);
+        RockButton.SetActive(true);
+        PaperButton.SetActive(true);
+        ScissorsButton.SetActive(true);
         yield return new WaitUntil(() => Bh.ProceedTrue);
         Debug.Log("Choice: " + Bh.choice);
         Bh.ProceedTrue = false;
         if(Bh.choice == "Rock")
         {
-            Bh.PaperButton.SetActive(false);
-            Bh.ScissorsButton.SetActive(false);
+            PaperButton.SetActive(false);
+            ScissorsButton.SetActive(false);
         }
         else if(Bh.choice == "Paper")
         {
-            Bh.RockButton.SetActive(false);
-            Bh.ScissorsButton.SetActive(false);
+            RockButton.SetActive(false);
+            ScissorsButton.SetActive(false);
         }
         else if(Bh.choice == "Scissors")
         {
-            Bh.RockButton.SetActive(false);
-            Bh.PaperButton.SetActive(false);
+            RockButton.SetActive(false);
+            PaperButton.SetActive(false);
         }
         //Keno's turn to choose
         Bh.variant = Random.Range(1, 4);
@@ -76,7 +79,7 @@ public class RPS : MonoBehaviour
         }
         yield return new WaitForSeconds(3f);
         //End rock paper scissors
-        Bh.RPSAssets.SetActive(false);
+        RPSAssets.SetActive(false);
         Bh.Entertained = false;
         Bh.ProceedTrue = false;
         Bh.uninterupt();

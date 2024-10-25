@@ -35,8 +35,6 @@ public class BEHAVIOUR : MonoBehaviour
     public float variant;
     public int attitude = 0; // 0 = normal, 1 = happy/cool, 2 = sad/angry
     [Header("Game related stuff and buttons")]
-    public GameObject RPSAssets;
-    public GameObject RockButton; public GameObject PaperButton; public GameObject ScissorsButton;
     public GameObject StopActivityButton; public GameObject ModeSelectGUI;
     [Tooltip("Set this to the Poke Region button")] public GameObject PR;
     [Header("Animations")]
@@ -80,6 +78,7 @@ public class BEHAVIOUR : MonoBehaviour
     [Header("Interaction Animations")]
     public VideoPlayer Alarm;
     public Sprite Poked;
+    [Header("Sprites for static eyes")]
     [Tooltip("This should be what the eye gameobject image is by default")]public Sprite Normal;
 
     void Start()
@@ -87,7 +86,7 @@ public class BEHAVIOUR : MonoBehaviour
         Tutorial.isTutorial = false; //Ensures that we are not in the tutorial
         StopAllVideos(); //Ensure all VideoPlayers are initially stopped and disabled
         GameReqOn = PlayerPrefs.GetInt("Game Requests", 1) == 1 ? true : false;
-        RPSAssets.SetActive(false);
+        RPS.RPSAssets.SetActive(false);
         StopActivityButton.SetActive(false);
         ModeSelectGUI.SetActive(false);
         if (PlayerPrefs.GetInt("Custom Expression Enabled", 0) == 1)
