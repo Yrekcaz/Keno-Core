@@ -19,10 +19,10 @@
 
 # MISC NOTES
 Keno uses `Unity` Version `2023.2.20f1`.
-Keno's eye animations were made in FlipAClip. Find more details here: `https://drive.google.com/drive/u/0/folders/1g2JWixMCNBfmGVO0Fj2afdTYAIZWnxnO`.
+Keno's eye animations were made in FlipAClip. Find more details here: https://drive.google.com/drive/u/0/folders/1g2JWixMCNBfmGVO0Fj2afdTYAIZWnxnO.
 Random commented lines that are part of script can be ignored, as they are likely there for future reference or there from past fails.
 
-For more help and/or assistance, contact `YrekcazContact@gmail.com` or join the discord server `https://www.discord.gg//HcG84gbmUA`.
+For more help and/or assistance, contact `YrekcazContact@gmail.com` or join the discord server https://www.discord.gg//HcG84gbmUA.
 
 There is info missing here. This is a WIP, and help is greatly appreciated.
 
