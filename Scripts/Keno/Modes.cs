@@ -16,7 +16,6 @@ public class Modes : MonoBehaviour
         Bh.interupt();
         Bh.GameRequests.GameButton.interactable = false;
         Bh.ProceedTrue = false;
-        Bh.Entertained = true;
         Bh.StopActivityButton.SetActive(true);
         Bh.ModeSelectGUI.SetActive(false);
         switch (Mode)

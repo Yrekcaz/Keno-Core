@@ -16,7 +16,6 @@ public class RPS : MonoBehaviour
     {
         Bh.interupt();   
         Bh.ProceedTrue = false;
-        Bh.Entertained = true;
         //Enable Buttons
         RPSAssets.SetActive(true);
         RockButton.SetActive(true);
@@ -80,7 +79,6 @@ public class RPS : MonoBehaviour
         yield return new WaitForSeconds(3f);
         //End rock paper scissors
         RPSAssets.SetActive(false);
-        Bh.Entertained = false;
         Bh.ProceedTrue = false;
         Bh.uninterupt();
         Bh.PR.SetActive(true);

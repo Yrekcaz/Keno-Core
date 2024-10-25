@@ -37,7 +37,6 @@ public class GameRequests : MonoBehaviour
         Bh.PR.SetActive(false);
         isBored = false;
         Bh.ProceedTrue = false;
-        Bh.Entertained = true;
         Bh.variant = Random.Range(1, 3); // variant
         Debug.Log("Bored");
         Debug.Log("Variant: " + Bh.variant);
@@ -47,7 +46,6 @@ public class GameRequests : MonoBehaviour
         gameName.text = "KENO would like to play Rock Paper Scissors";
         yield return new WaitUntil(() => Bh.ProceedTrue);
         Debug.Log("Choice: " + Bh.choice);
-        Bh.Entertained = false;
         gameRequest.SetActive(false);
 
         if (Bh.choice == "Yes")
@@ -72,9 +70,8 @@ public class GameRequests : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < waitForBoredAgain)
         {
-            if (Bh.Entertained)
+            if (Bh.interupted)
             {
-                Bh.Entertained = false;
                 Debug.Log("Bored Trigger Cancled");
                 yield break; // Exit the coroutine
             }
@@ -112,13 +109,11 @@ public class GameRequests : MonoBehaviour
         Bh.interupt();
         Bh.ProceedTrue = false;
         isBored = false;
-        Bh.Entertained = true;
         ChooseGame();
         yield return new WaitUntil(() => Bh.ProceedTrue);
         Debug.Log("Choice: " + Bh.choice);
         gameSelectGUI.SetActive(false);
         gameSelectGUI2.SetActive(false);
-        Bh.Entertained = false;
         if (Bh.choice == "RPS")
         {
             StartCoroutine(RPS.RockPaperScissors());
@@ -128,7 +123,6 @@ public class GameRequests : MonoBehaviour
         {
             Bh.PR.SetActive(true);
             Bh.uninterupt();
-            Bh.Entertained = false;
             GameButton.interactable = true;
         }
     }

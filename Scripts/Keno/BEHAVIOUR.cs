@@ -26,7 +26,6 @@ public class BEHAVIOUR : MonoBehaviour
     public bool longWait = false;
     public bool ProceedTrue = false;
     public bool doingsomething = false;
-    public bool Entertained = false;
     public bool interupted = false;
     public bool ResetAttitudeTimer = false;
     private bool asleepThisSession = false;
