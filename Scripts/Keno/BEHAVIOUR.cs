@@ -79,6 +79,9 @@ public class BEHAVIOUR : MonoBehaviour
     public Sprite Poked;
     [Header("Sprites for static eyes")]
     [Tooltip("This should be what the eye gameobject image is by default")]public Sprite Normal;
+	[Tooltip]("This is a buffer for when it takes a moment for the animation to start")public Sprite SleepBuff;
+	[Tooltip]("This is a buffer for when it takes a moment for the animation to start")public Sprite ReadBuff;
+	[Tooltip]("This is a buffer for when it takes a moment for the animation to start")public Sprite Read2Buff;
 
     void Start()
     {
